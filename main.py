@@ -1,4 +1,5 @@
 import pygame
+from pygame.transform import scale
 from settings import *
 from player import Player
 import math
@@ -35,7 +36,7 @@ while True:
     for rect in rects_to_draw:
         x0, y0, height, offset = rect
         wall_column = texture_img.subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
-        wall_column = pygame.transform.scale(wall_column, (SCALE, height))
+        wall_column = scale(wall_column, (SCALE, height))
         sc.blit(wall_column, (x0, y0))
 
     pygame.draw.circle(sc, GREEN, (int(player.x), int(player.y)), 12)

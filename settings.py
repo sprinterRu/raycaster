@@ -33,7 +33,10 @@ BLUE = (0, 0, 255)
 DARKGRAY = (40, 40, 40)
 PURPLE = (120, 0, 120)
 
-# texture settings (1200 x 1200)
+# texture settings
 TEXTURE_WIDTH = 256
 TEXTURE_HEIGHT = 256
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
+
+# physics settings
+COLLISION_SPHERE_RADIUS = 20
