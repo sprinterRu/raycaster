@@ -18,20 +18,26 @@ def ray_casting(player_pos, player_angle: float, objects: List):
         cur_angle = start_angle + ray * DELTA_ANGLE
         cos_a, sin_a = cos(cur_angle), sin(cur_angle)
         min_depth = 999999999
+        offset = 0
 
         for x, y, dst in objects_in_fov:
             if dst < min_depth + 90000:
                 x_i, y_i, d = ray_intersects_rectangle(x0, y0, x, y, cos_a, sin_a, min_depth)
                 if d < min_depth:
                     min_depth = d
+                    if x_i % TILE == 0:
+                        offset = int(y_i) % TILE
+                    else:
+                        offset = int(x_i) % TILE
                     if ray == NUM_RAYS_HALF:
                         min_x = x_i
                         min_y = y_i
 
-        proj_height = min(PROJ_COEFF / (math.sqrt(min_depth) + 0.0001), HEIGHT)
-        c = 255 / (1 + min_depth * 0.0001)
-        color = (c // 2, c, c // 3)
-        rects.append((color,  (ray * SCALE, HALF_HEIGHT - proj_height // 2, SCALE, proj_height)))
+        proj_height = int(PROJ_COEFF / (math.sqrt(max(min_depth, 1))))
+        # c = 255 / (1 + min_depth * 0.0001)
+        # color = (c // 2, c, c // 3)
+        # rects.append((color,  (ray * SCALE, HALF_HEIGHT - proj_height // 2, SCALE, proj_height)))
+        rects.append((ray * SCALE, HALF_HEIGHT - proj_height // 2, proj_height, offset))
 
     return min_x, min_y, rects
 
