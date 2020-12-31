@@ -36,10 +36,10 @@ class Player:
             self.angle -= 1 / (fps + 1)
         if keys[pygame.K_RIGHT]:
             self.angle += 1 / (fps + 1)
-        if not collision_detected(self.x, self. y, tmp_x, tmp_y, world_map):
+        if not collision_detected(tmp_x, tmp_y, world_map):
             self.x = tmp_x
             self.y = tmp_y
-        elif not collision_detected(self.x, self. y, self.x, tmp_y, world_map):
+        elif not collision_detected(self.x, tmp_y, world_map):
             self.y = tmp_y
-        elif not collision_detected(self.x, self. y, tmp_x, self.y, world_map):
+        elif not collision_detected(tmp_x, self.y, world_map):
             self.x = tmp_x

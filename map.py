@@ -1,6 +1,7 @@
 from settings import *
 from numba.typed import List
 from numba import njit
+from geometry import rect_circle_intersect
 
 text_map = [
     'WWWWWWWWWWWW',
@@ -21,10 +22,8 @@ for j, row in enumerate(text_map):
 
 
 @njit(cache=True)
-def collision_detected(old_x, old_y, new_x, new_y, objects):
-    sx = new_x + COLLISION_SPHERE_RADIUS * (new_x - old_x)
-    sy = new_y + COLLISION_SPHERE_RADIUS * (new_y - old_y)
+def collision_detected(new_x, new_y, objects):
     for x, y in objects:
-        if x <= sx <= x + TILE and y <= sy <= y + TILE:
+        if rect_circle_intersect(x, y, new_x, new_y, COLLISION_SPHERE_RADIUS):
             return True
     return False

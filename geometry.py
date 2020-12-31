@@ -74,3 +74,28 @@ def ray_intersects_rectangle(x0, y0, x_rect, y_rect, cos, sin, min_depth):
                 dist_min = d
 
     return x_min, y_min, dist_min
+
+
+@njit(fastmath=True, cache=True)
+def rect_circle_intersect(x_rect, y_rect, x_circle, y_circle, r) -> bool:
+    # check intersection with horizontal edges
+    if x_rect <= x_circle <= x_rect + TILE:
+        if abs(y_rect - y_circle) <= r or abs(y_rect + TILE - y_circle) <= r:
+            return True
+
+    # check intersection with vertical edges
+    if y_rect <= y_circle <= y_rect + TILE:
+        if abs(x_rect - x_circle) <= r or abs(x_rect + TILE - x_circle) <= r:
+            return True
+
+    r_sq = r * r
+    if (x_rect - x_circle) ** 2 + (y_rect - y_circle) ** 2 <= r_sq:
+        return True
+    if (x_rect + TILE - x_circle) ** 2 + (y_rect - y_circle) ** 2 <= r_sq:
+        return True
+    if (x_rect + TILE - x_circle) ** 2 + (y_rect + TILE - y_circle) ** 2 <= r_sq:
+        return True
+    if (x_rect - x_circle) ** 2 + (y_rect + TILE - y_circle) ** 2 <= r_sq:
+        return True
+
+    return False

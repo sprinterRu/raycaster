@@ -20,7 +20,7 @@ Y = 400
 # which is present in pygame.
 # 2nd parameter is size of the font
 font = pygame.font.Font('freesansbold.ttf', 32)
-texture_img = pygame.image.load('images/brickwall2.jpg')
+texture_img = pygame.image.load('images/brickwall2.jpg').convert()
 fps = FPS // 2
 
 while True:
@@ -50,5 +50,5 @@ while True:
     fps = clock.get_fps()
     text = font.render(str(round(fps)), True, WHITE, BLUE)
     sc.blit(text, (50, 20))
-    pygame.display.flip()
+    pygame.display.update()
     clock.tick(FPS)

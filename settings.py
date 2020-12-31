@@ -20,8 +20,8 @@ PROJ_COEFF = 2 * DIST * TILE
 SCALE = WIDTH // NUM_RAYS
 
 # player settings
-player_pos = (HALF_WIDTH + TILE / 2, HALF_HEIGHT)
-player_angle = 3 * math.pi / 2 - 0.3
+player_pos = (HALF_WIDTH + TILE // 2, HALF_HEIGHT + TILE // 2)
+player_angle = 3 * math.pi / 2 - math.pi / 4
 player_speed = 100
 
 # colors
