@@ -19,11 +19,13 @@ def ray_casting(player_pos, player_angle: float, objects: List):
         cos_a, sin_a = cos(cur_angle), sin(cur_angle)
         min_depth = 999999999
         offset = 0
+        texture_key = '.'
 
-        for x, y, dst in objects_in_fov:
+        for x, y, c, dst in objects_in_fov:
             if dst < min_depth + 90000:
                 x_i, y_i, d = ray_intersects_rectangle(x0, y0, x, y, cos_a, sin_a, min_depth)
                 if d < min_depth:
+                    texture_key = c
                     min_depth = d
                     if x_i % TILE == 0:
                         offset = int(y_i) % TILE
@@ -37,7 +39,7 @@ def ray_casting(player_pos, player_angle: float, objects: List):
         # c = 255 / (1 + min_depth * 0.0001)
         # color = (c // 2, c, c // 3)
         # rects.append((color,  (ray * SCALE, HALF_HEIGHT - proj_height // 2, SCALE, proj_height)))
-        rects.append((ray * SCALE, HALF_HEIGHT - proj_height // 2, proj_height, offset))
+        rects.append((ray * SCALE, HALF_HEIGHT - proj_height // 2, proj_height, offset, texture_key))
 
     return min_x, min_y, rects
 
@@ -50,13 +52,13 @@ def get_objects_in_fov(x0, y0, angle, objects):
     b = -(x0 * n_x + y0 * n_y)
     l = List()
 
-    for x, y in objects:
+    for x, y, c in objects:
         # determine coordinates of the closest corner to the player
         xt = x if n_x < 0 else x + TILE
         yt = y if n_y < 0 else y + TILE
         d = xt * n_x + yt * n_y + b
         if d >= 0:
             dst = (x - x0) ** 2 + (y - y0) ** 2
-            l.append((x, y, dst))
+            l.append((x, y, c, dst))
 
     return sorted(l, key=lambda x: x[2])

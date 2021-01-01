@@ -20,7 +20,9 @@ Y = 400
 # which is present in pygame.
 # 2nd parameter is size of the font
 font = pygame.font.Font('freesansbold.ttf', 32)
-texture_img = pygame.image.load('images/brickwall2.jpg').convert()
+texture_map = dict()
+texture_map['W'] = pygame.image.load('images/brickwall2.jpg').convert()
+texture_map['K'] = pygame.image.load('images/brick-texture-png-23887.png').convert()
 fps = FPS // 2
 
 while True:
@@ -34,7 +36,8 @@ while True:
 
     x_, y_, rects_to_draw = ray_casting(player.pos, player.angle, world_map)
     for rect in rects_to_draw:
-        x0, y0, height, offset = rect
+        x0, y0, height, offset, key = rect
+        texture_img = texture_map[key]
         wall_column = texture_img.subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
         wall_column = scale(wall_column, (SCALE, height))
         sc.blit(wall_column, (x0, y0))
@@ -44,7 +47,7 @@ while True:
         pygame.draw.circle(sc, RED, (int(x_), int(y_)), 6)
     pygame.draw.line(sc, GREEN, player.pos, (player.x + WIDTH * math.cos(player.angle),
                                              player.y + WIDTH * math. sin(player.angle)), 2)
-    for x,y in world_map:
+    for x, y, _ in world_map:
         pygame.draw.rect(sc, BLACK, (x, y, TILE, TILE), 2)
 
     fps = clock.get_fps()

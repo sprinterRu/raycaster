@@ -8,8 +8,8 @@ text_map = [
     'W......W...W',
     'W..WWW...W.W',
     'W....W..WW.W',
-    'W..W....W..W',
-    'W..W...WWW.W',
+    'W..K....W..W',
+    'W..K...WWW.W',
     'W....W.....W',
     'WWWWWWWWWWWW'
 ]
@@ -17,13 +17,13 @@ text_map = [
 world_map = List()
 for j, row in enumerate(text_map):
     for i, char in enumerate(row):
-        if char == 'W':
-            world_map.append((i * TILE, j * TILE))
+        if char != '.':
+            world_map.append((i * TILE, j * TILE, char))
 
 
 @njit(cache=True)
 def collision_detected(new_x, new_y, objects):
-    for x, y in objects:
+    for x, y, _ in objects:
         if rect_circle_intersect(x, y, new_x, new_y, COLLISION_SPHERE_RADIUS):
             return True
     return False
